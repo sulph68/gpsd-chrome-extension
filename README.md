@@ -59,14 +59,19 @@ Location is shared temporarily with a page.  It will bypass the Chrome Location 
 
 **Note:** If this component isn't installed, the Chrome extension **will not work**.  This also requires `gpspipe`, which is in the `gpsd-clients` package.
 
+To install the Python code, run the following:
+
 ```
-python setup.py install
+make install
 ```
 
+This will install the script and the needed Native Messaging configuration for Chrome and Chromium.
+
+You will need to restart Chrome after doing this.
 
 ## Chrome extension
 
-Available from the Chrome Web Store.
+[Available from the Chrome Web Store.](https://chrome.google.com/webstore/detail/gpsd-chrome-polyfill/dmfdcjlppdohhegplckcbohgbbfcdfjd)
 
 ### Building the ZIP
 
