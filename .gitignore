@@ -1,0 +1,6 @@
+*.crx
+*~
+*.pyc
+*.pyo
+*.pem
+*.zip
