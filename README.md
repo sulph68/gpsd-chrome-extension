@@ -92,7 +92,7 @@ If you're playing with this yourself, you'll notice that the extension ID has ch
 If you want to test something without gpsd attached, you can enter the background page console (in chrome://extensions) and enter the following code into the console:
 
 ```javascript
-setInterval(function() { gpsd_port_messageHandler({class:'TPV',tag:'RMC', lat:-33.85717, lon:151.21502, mode:2, time:(new Date()).getTime()}); }, 1000);
+setInterval(function() { gpsd_port_messageHandler({class:'TPV',tag:'RMC', lat:-33.85717, lon:151.21502, mode:2, epy:50, epx:50, time:(new Date()).getTime()}); }, 1000);
 ```
 
 This will send a GPS message every second with your location as the [Sydney Opera House](https://en.wikipedia.org/wiki/Sydney_Opera_House).
