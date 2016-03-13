@@ -8,7 +8,7 @@ This consists of two parts:
 
 1. A Python wrapper script (gpspipew) which wraps gpspipe's newline seperated message format into using the [Chrome Native Messaging protocol](https://developer.chrome.com/extensions/nativeMessaging#native-messaging-host-protocol).
 
-2. A Chrome extension which provides a Geolocation API polyfill.
+2. [A Chrome extension which provides a Geolocation API polyfill.](https://chrome.google.com/webstore/detail/gpsd-chrome-polyfill/dmfdcjlppdohhegplckcbohgbbfcdfjd)
 
 The Chrome extension is configured to use the `activeTab` permission model in lieu of implementing all of the permission handling for the Geolocation API, and then trying to get access to all websites.
 
