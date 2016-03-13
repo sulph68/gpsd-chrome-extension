@@ -29,7 +29,7 @@ then
 	mkdir -p "$DEST1" "$DEST2"
 	install -o0 -g0 -m0644 "$DIR/$CONF" "$DEST1/$CONF"
 	install -o0 -g0 -m0644 "$DIR/$CONF" "$DEST2/$CONF"
-	echo "Installed Native Messaging data to system Chrom{e,ium} directories"
+	echo "Installed Native Messaging data to system Chrom{e,ium} directories."
 
 	install -o0 -g0 "$DIR/gpspipew.py" "/usr/local/bin"
 	echo "Installed gpspipew.py to /usr/local/bin"
@@ -49,8 +49,10 @@ elif [ "$1" = "-u" ]; then
 	mkdir -p "$DEST1" "$DEST2"
 	install -m0644 "$DIR/$CONF" "$DEST1/$CONF"
 	install -m0644 "$DIR/$CONF" "$DEST2/$CONF"
-	echo "Installed Native Messaging data to user Chrom{e,ium} directories"
-	echo "You need to manually install gpspipew.py to /usr/local/bin"
+	echo "Installed Native Messaging data to user Chrom{e,ium} directories."
+	echo ""
+	echo "You need to manually install gpspipew.py to /usr/local/bin, or edit"
+	echo "$DEST1/$CONF to point at the location of the script."
 else
 	# Give instructions
 	echo "Usage: $0 <-s|-u>"
