@@ -62,12 +62,14 @@ Location is shared temporarily with a page.  It will bypass the Chrome Location 
 To install the Python code, run the following:
 
 ```
-make install
+sudo make install
 ```
 
-This will install the script and the needed Native Messaging configuration for Chrome and Chromium.
+This will install the script and the needed Native Messaging configuration for Chrome and Chromium.  The gory bits of that are in `gpspipew/install.sh`.  It should work on Linux and OS X.
 
 You will need to restart Chrome after doing this.
+
+You can test the script works with `/usr/local/bin/gpspipew.py` and it should start spitting out some binary and JSON at your terminal.
 
 ## Chrome extension
 
