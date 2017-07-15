@@ -2,7 +2,7 @@
 """
 Wraps gpspipe in order to pass Chrome Native Messaging protocol messages.
 
-Copyright 2016 Michael Farrell <micolous+git@gmail.com>
+Copyright 2016-2017 Michael Farrell <micolous+git@gmail.com>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
@@ -22,11 +22,23 @@ gpspipe must be in your PATH for this script to work.
 
 ref: https://developer.chrome.com/extensions/nativeMessaging
 """
-from subprocess import *
+from os import environ
+from os.path import dirname, realpath
+from subprocess import Popen, PIPE
 from struct import pack
 from sys import stdout
 
-process = Popen(['gpspipe', '-w'], stdin=PIPE, stdout=PIPE)
+# Make a copy of the environment, and stuff in extra places to try.
+# On OSX, $PATH when launched from the Dock or Finder is sparse.
+env = environ.copy()
+env['PATH'] = ':'.join([
+	env['PATH'],
+	dirname(realpath(__file__)),
+	'/usr/local/bin',
+	'/usr/bin',
+])
+
+process = Popen(['gpspipe', '-w'], stdin=PIPE, stdout=PIPE, env=env)
 
 try:
 	while process.returncode is None:
@@ -55,4 +67,3 @@ finally:
 		process.kill()
 	except:
 		pass
-
