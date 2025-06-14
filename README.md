@@ -11,7 +11,7 @@ The gpspipew.py script has also been slightly improved to work better in python3
 
 Installation instructions remains similar.
 
- gpsd-chrome-extension
+# gpsd-chrome-extension
 A Google Chrome/Chromium extension providing a HTML5 Geolocation API polyfill which connects to gpsd.
 
 This uses the [Chrome Native Messaging API](https://developer.chrome.com/extensions/nativeMessaging) in order to connect `gpspipe` to Chrome.  This doesn't use libgps as [it consistently breaks ABI compatibility](https://bugs.chromium.org/p/chromium/issues/detail?id=99177).
