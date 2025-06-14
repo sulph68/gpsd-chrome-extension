@@ -1,5 +1,5 @@
 CRX_SOURCES=crx/manifest.json crx/background.js crx/content_script.js crx/shim.js crx/icon48.png crx/icon128.png
-GPSPIPEW_SOURCES=gpspipew/au.id.micolous.gpspipe.json gpspipew/gpspipew.py gpspipew/install.sh
+GPSPIPEW_SOURCES=gpspipew/sg.id.copper.gpspipe.json gpspipew/gpspipew.py gpspipew/install.sh
 
 .PHONY: clean
 

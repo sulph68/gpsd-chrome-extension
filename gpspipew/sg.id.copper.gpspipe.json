@@ -1,0 +1,9 @@
+{
+	"name": "sg.id.copper.gpspipe",
+	"description": "gpspipew",
+	"path": "/usr/local/bin/gpspipew.py",
+	"type": "stdio",
+	"allowed_origins": [
+		"chrome-extension://mmbiloeboakmonlmjiipgglbboeephae/"
+	]
+}

@@ -1,7 +1,7 @@
 #!/bin/bash
 PLATFORM="`uname -s`"
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-CONF="sg.id.copper.gpspipe.json"
+CONF="au.id.micolous.gpspipe.json"
 
 if [ "$PLATFORM" != "Darwin" ] && [ "$PLATFORM" != "Linux" ]
 then

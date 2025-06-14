@@ -1,9 +1,8 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 """
 Wraps gpspipe in order to pass Chrome Native Messaging protocol messages.
 
 Copyright 2016-2017 Michael Farrell <micolous+git@gmail.com>
-Copyright 2025- Benjamin Khoo <sulph68@gmail.com>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -20,9 +19,7 @@ limitations under the License.
 gpspipe must be in your PATH for this script to work.
 
 ref: https://developer.chrome.com/extensions/nativeMessaging
-
 """
-import sys
 from os import environ
 from os.path import dirname, realpath
 from subprocess import Popen, PIPE
@@ -51,17 +48,14 @@ try:
 			continue
 
 		# Lines from gpspipe are already json, yay!
-		if isinstance(line, bytes):
-			line = line.decode('utf-8', errors='replace')  # or 'ignore'
-		line = line.strip()
+		line = line.strip().encode('utf-8')
 
 		# Protocol is to have a JSON blob preceeded with a uint32 in native byte
 		# order.
-		line_bytes = line.encode('utf-8')
-		sys.stdout.buffer.write(pack('=L', len(line_bytes)) + line_bytes)
+		stdout.write(pack('=L', len(line)) + line)
 
 		# Flush the output immediately.
-		sys.stdout.buffer.flush()
+		stdout.flush()
 except KeyboardInterrupt:
 	# Swallow the exception message
 	pass

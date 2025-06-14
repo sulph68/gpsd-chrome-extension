@@ -19,100 +19,122 @@
  * limitations under the License.
  */
 
-(function() {
-	var LocationShim = function() { /* private */
-		var sequence = 0, watches = {};
 
-		var notify = function(data) {
-			Object.keys(watches).forEach(function(id) {
-				var watch = watches[id];
+(() => {
+  "use strict";
+	let debug = false;
 
-				if (!watch.enabled) {
-					return;
+  class LocationShim {
+    constructor() {
+      this.sequence = 0;
+      this.watches = {};
+
+      window.addEventListener("message", (event) => {
+        if (event.source !== window && event.origin !== window.origin) {
+          if (debug) console.warn("shim: message not from window");
+          return;
 				}
 
-				if (typeof(watch.success) === 'function') {
-					watch.success.call(window, data);
-				}
+        this._notify(event.data);
+      });
+    }
 
-				if (watch.once) {
-					watch.enabled = false;
-				}
-			});
-		};
+    _notify(data) {
+			if (debug) console.log("shim: notifying with data:", JSON.stringify(data,null,2));
+      Object.entries(this.watches).forEach(([id, watch]) => {
+        if (!watch.enabled) return;
 
-		window.addEventListener('message', function(event) {
-			// Only want messages from the window.
-			if (event.source != window) {
-				console.log('shim: message not from window');
-				return;
-			}
+        if (typeof watch.success === "function") {
+          watch.success.call(window, data);
+        }
 
-			//console.log('shim: got ' + JSON.stringify(event.data));
-			notify(event.data);
-		});
+        if (watch.once) {
+          watch.enabled = false;
+        }
+      });
+    }
 
-		this.addWatch = function(once, success, error, options) {
-			sequence++;
-			watches[sequence] = {
-				once: once,
-				enabled: true,
-				success: success,
-				error: error
-			};
+    addWatch(once, success, error, options) {
+      this.sequence++;
+      this.watches[this.sequence] = {
+        once,
+        enabled: true,
+        success,
+        error
+      };
+      return this.sequence;
+    }
 
-			return sequence;
-		};
+    clearWatch(id) {
+      if (this.watches[id]) {
+        this.watches[id].enabled = false;
+      }
+    }
 
-		this.destroy = function() {
-			watches = [];
-			return this;
-		};
+    destroy() {
+      this.watches = {};
+      return this;
+    }
 
-		this.clearWatch = function(id) {
-			if (watches[id]) {
-				watches[id].enabled = false;
-			}
-		};
-	};
+    static override(geolocation) {
+      const shim = new LocationShim();
 
-	// Monkeypatch in our version of the Geolocation API
-	LocationShim.override = function(geolocation) {
-		var shim = new LocationShim();
+      geolocation.getCurrentPosition = (success, error, options) => {
+        shim.addWatch(true, success, error, options);
+      };
 
-		geolocation.getCurrentPosition = function(success, error, options) {
-			shim.addWatch(true, success, error, options);
-		};
-		
-		geolocation.watchPosition = function(success, error, options) {
-			return shim.addWatch(false, success, error, options);
-		};
+      geolocation.watchPosition = (success, error, options) => {
+        return shim.addWatch(false, success, error, options);
+      };
 
-		geolocation.clearWatch = function(id) {
-			shim.clearWatch(id);
-		};
-	};
+      geolocation.clearWatch = (id) => {
+        shim.clearWatch(id);
+      };
+    }
+  }
 
-	LocationShim.override(navigator.geolocation);
-	console.log('LocationShim installed');
+  LocationShim.override(navigator.geolocation);
+  console.log("LocationShim installed (Version 3)");
 
-	// Show a toast in the browser, to prove we are installed.
-	var toast = document.createElement('div');
-	toast.textContent = 'Location shim installed.';
-	toast.style.position = 'fixed';
-	toast.style.top = toast.style.left = toast.style.right = 0;
-	toast.style.textAlign = 'center';
-	toast.style.zIndex = 99999;
-	toast.style.backgroundColor = '#ffb';
-	toast.style.color = '#333';
-	toast.style.fontWeight = 'bold';
-	toast.style.fontFamily = 'sans-serif';
-	toast.style.fontSize = '30px';
-	toast.style.padding = '5px';
+  // Optional: Show a temporary toast confirming injection (wait for DOM ready)
+  const showToast = () => {
+    const toast = document.createElement("div");
+    toast.textContent = "GPSd connector installed.";
+    Object.assign(toast.style, {
+      position: "fixed",
+      top: "0",
+      left: "0",
+      right: "0",
+      textAlign: "center",
+      zIndex: "99999",
+      backgroundColor: "#ffb",
+      color: "#333",
+      fontWeight: "bold",
+      fontFamily: "sans-serif",
+      fontSize: "14px",
+      padding: "3px"
+    });
+    document.body.appendChild(toast);
+    setTimeout(() => {
+      toast.remove();
+    }, 5000);
+  };
 
-	document.body.appendChild(toast);
-	setTimeout(function() {
-		document.body.removeChild(toast);
-	}, 5000);
-}());
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", showToast);
+  } else {
+    showToast();
+  }
+
+	// Page context
+	window.postMessage(
+  {
+    source: "shim", // your own namespace
+    type: "startGPS", // custom action
+    payload: {}
+  },
+  "*"
+);
+
+})();
 
