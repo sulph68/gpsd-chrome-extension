@@ -90,12 +90,14 @@ See the "Hacking" section below.
 
 ### Hacking
 
-You can point Chrome an the unpacked extension directory if you're just hacking around on the code.
+You can point Chrome to the extension directory if you're just hacking around on the code.
 
-If you're playing with this yourself, you'll notice that the extension ID has changed. Please update that.
+chrome://extensions -> Developer Mode -> Load unpacked
+
+If you're playing with this yourself, you might notice that the extension ID has changed. Please update that.
 Until i manage to find time to actually publish the extension, that will have to do.
 
-If you want to test something without gpsd attached, you can enter the background page console (in chrome://extensions) and should observe some output. Do make use of `xgps` or `cgps` to ensure that your `gpsd` is working well.
+To check if everything is working, you can enter the background page within the console (in chrome://extensions) and should observe some output. Do make use of `xgps` or `cgps` to ensure that your `gpsd` is working well.
 
 ## Licenses
 
