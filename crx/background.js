@@ -22,6 +22,9 @@ let gpsdPort = null;
 let connected = false;
 let debug = false;
 let last_position;
+let last_update_time = 0;
+const update_delay = 5000;
+
 const listeningTabs = new Set();
 
 function sendPositionToTabs(position) {
@@ -56,6 +59,12 @@ function handleGpsdMessage(msg) {
 		timestamp: new Date(msg.time).getTime()
 	};
 
+	const now = Date.now();
+  if (now - last_update_time < update_delay) {
+    if (debug) console.log("Update skipped to enforce interval (" + update_delay + ").");
+    return;
+  }
+
 	if (debug) console.log("geolocation obj: " + JSON.stringify(position));
 	if (msg["mode"] >= 2) {
 		last_position = position;
@@ -70,7 +79,8 @@ function handleGpsdMessage(msg) {
 			console.log("Inital position: " + msg.lat + ", " + msg.lon);
 		}
 	}
-		
+
+	last_update_time = now;		
 }
 
 function connectGpsd(firstTry = false) {
