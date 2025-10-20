@@ -98,26 +98,41 @@
 
   // Optional: Show a temporary toast confirming injection (wait for DOM ready)
   const showToast = () => {
+    // if already shown, don't show again for session
+    if (sessionStorage.getItem("gpsdToastShown")) return;
+
     const toast = document.createElement("div");
     toast.textContent = "GPSd connector installed.";
     Object.assign(toast.style, {
       position: "fixed",
-      top: "0",
-      left: "0",
-      right: "0",
-      textAlign: "center",
+      top: "10px",
+      left: "10px",
+      // right: "0",
+      // textAlign: "center",
       zIndex: "99999",
       backgroundColor: "#ffb",
       color: "#333",
       fontWeight: "bold",
       fontFamily: "sans-serif",
       fontSize: "14px",
-      padding: "3px"
+      padding: "10px",
+      /* design updates */
+      borderRadius: "8px",
+      boxShadow: " 0 2px 6px rgba(0,0,0,0.2)",
+      maxWidth: "300px",
+      textAlign: "left",
+      opacity: "1",
+      transition: "opacity 0.6s ease",
+
     });
     document.body.appendChild(toast);
     setTimeout(() => {
-      toast.remove();
-    }, 5000);
+      toast.style.opacity = "0";
+      setTimeout(() => toast.remove(), 600);
+    }, 4400);
+
+    // Store session shown state
+    sessionStorage.setItem("gpsdToastShown", "1");
   };
 
   if (document.readyState === "loading") {
